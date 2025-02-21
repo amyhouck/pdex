@@ -1,75 +1,33 @@
 mod data;
+mod lookup;
 
-use clap::Parser;
-use data::PokemonType;
-use colored::Colorize;
+use clap::{Parser, Subcommand};
 
 #[derive(Debug, Parser)]
 #[command(version, about, long_about = None)]
 struct PDex {
-    #[arg(short, long, value_name = "NAME")]
-    name: Option<String>,
-    
-    #[arg(short, long, value_name = "ID")]
-    id: Option<u16>,
+    #[command(subcommand)]
+    command: Commands,
+}
+
+#[derive(Debug, Subcommand)]
+enum Commands {
+    #[command(arg_required_else_help = true)]
+    Lookup {
+        #[arg(short, long, value_name = "NAME")]
+        name: Option<String>,
+        
+        #[arg(short, long, value_name = "ID")]
+        id: Option<i64>,
+    }
 }
 
 fn main() {
     let cli = PDex::parse();
-    
-    // Open and pull information from the local database
     let db = rusqlite::Connection::open("pdex.db").unwrap();
     
-    let query = if let Some(id) = cli.id {
-        format!("SELECT * FROM generation_1 WHERE id = {id}")  
-    } else if let Some(name) = cli.name {
-        format!("SELECT * FROM generation_1 WHERE name = \"{name}\"")
-    } else {
-        panic!("Woopsie");
-    };
-    
-    let data = db.query_row(&query, (), |row| {
-        let type1: i64 = row.get("type1").unwrap();
-        let type2: i64 = row.get("type2").unwrap_or(-1);
-        
-        Ok(data::Pokemon {
-            id: row.get("id").unwrap(),
-            name: row.get("name").unwrap(),
-            type1: PokemonType::from(type1),
-            type2: PokemonType::from(type2),
-            height: row.get("height").unwrap(),
-            weight: row.get("weight").unwrap(),
-            base_hp: row.get("base_hp").unwrap(),
-            base_attack: row.get("base_attack").unwrap(),
-            base_defense: row.get("base_defense").unwrap(),
-            base_special: row.get("base_special").unwrap(),
-            base_speed: row.get("base_speed").unwrap(),
-            text_red: row.get("text_red").unwrap(),
-            text_blue: row.get("text_blue").unwrap(),
-            text_yellow: row.get("text_yellow").unwrap()
-        })
-    }).unwrap();
-    
-    // Print information
-    println!("{}: {} ({})", "Name".red(), data.name, data.id.to_string()); // NAME (ID)
-    
-    if data.type2 == PokemonType::None { // TYPE or TYPES
-        println!("{}: {}", "Type".red(), data.type1.to_string());
-    } else {
-        println!("{}: {} / {}", "Types".red(), data.type1.to_string(), data.type2.to_string());
+    match cli.command {
+        Commands::Lookup { name, id } => lookup::lookup(&db, name, id),
     }
     
-    println!("{}: {}m", "Height".red(), data.height); // HEIGHT
-    println!("{}: {}kg", "Weight".red(), data.weight); // WEIGHT
-    
-    println!("{}:", "Base Stats".red()); //BASE STATS
-    println!(" - {}: {}", "HP".blue(), data.base_hp);
-    println!(" - {}: {}", "Attack".blue(), data.base_attack);
-    println!(" - {}: {}", "Defense".blue(), data.base_defense);
-    println!(" - {}: {}", "Special".blue(), data.base_special);
-    println!(" - {}: {}", "Speed".blue(), data.base_speed);
-    
-    println!("{}:", "Text:".red()); // FLAVOR TEXT
-    println!(" - {} / {}: {}", "Red".red(), "Blue".blue(), data.text_red);
-    println!(" - {}: {}", "Yellow".yellow(), data.text_yellow);
 }

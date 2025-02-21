@@ -14,7 +14,7 @@ pub struct Pokemon {
     pub base_special: i64,
     pub base_speed: i64,
     pub text_red: String,
-    pub text_blue: String,
+    #[allow(dead_code)] pub text_blue: String, // Allowing dead code temporarily because this field is not currently being used but exists in the database.
     pub text_yellow: String,
 }
 
