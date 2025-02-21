@@ -1,6 +1,8 @@
+use std::collections::HashMap;
+
 // Primary Pokemon Structure
 // Generation 1
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Pokemon {
     pub id: i64,
     pub name: String,
@@ -8,20 +10,22 @@ pub struct Pokemon {
     pub type2: PokemonType,
     pub height: f64,
     pub weight: f64,
+    
     pub base_hp: i64,
     pub base_attack: i64,
     pub base_defense: i64,
-    pub base_special: i64,
+    pub base_special: i64, // Generation 1 only
+    pub base_special_attack: i64,
+    pub base_special_defense: i64,
     pub base_speed: i64,
-    pub text_red: String,
-    #[allow(dead_code)] pub text_blue: String, // Allowing dead code temporarily because this field is not currently being used but exists in the database.
-    pub text_yellow: String,
+    
+    pub flavor_text: HashMap<String, String>,
 }
 
 // Pokemon Types
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Default, PartialEq)]
 pub enum PokemonType {
-    None = -1,
+    #[default] None = -1,
     Normal,
     Fighting,
     Flying,
@@ -30,13 +34,15 @@ pub enum PokemonType {
     Rock,
     Bug,
     Ghost,
+    Steel,
     Fire,
     Water,
     Grass,
     Electric,
     Psychic,
     Ice,
-    Dragon
+    Dragon,
+    Dark,
 }
 
 impl From<i64> for PokemonType {
@@ -50,13 +56,15 @@ impl From<i64> for PokemonType {
             5 => Self::Rock,
             6 => Self::Bug,
             7 => Self::Ghost,
-            8 => Self::Fire,
-            9 => Self::Water,
-            10 => Self::Grass,
-            11 => Self::Electric,
-            12 => Self::Psychic,
-            13 => Self::Ice,
-            14 => Self::Dragon,
+            8 => Self::Steel,
+            9 => Self::Fire,
+            10 => Self::Water,
+            11 => Self::Grass,
+            12 => Self::Electric,
+            13 => Self::Psychic,
+            14 => Self::Ice,
+            15 => Self::Dragon,
+            16 => Self::Dark,
             _ => Self::None
         }
     }
@@ -73,6 +81,7 @@ impl ToString for PokemonType {
             Self::Rock => String::from("Rock"),
             Self::Bug => String::from("Bug"),
             Self::Ghost => String::from("Ghost"),
+            Self::Steel => String::from("Steel"),
             Self::Fire => String::from("Fire"),
             Self::Water => String::from("Water"),
             Self::Grass => String::from("Grass"),
@@ -80,6 +89,7 @@ impl ToString for PokemonType {
             Self::Psychic => String::from("Psychic"),
             Self::Ice => String::from("Ice"),
             Self::Dragon => String::from("Dragon"),
+            Self::Dark => String::from("Dark"),
             _ => String::from("None")
         }
     }
