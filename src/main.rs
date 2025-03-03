@@ -2,6 +2,7 @@ mod data;
 mod lookup;
 
 use clap::{Parser, Subcommand};
+use anyhow::{Context, Result};
 
 const LATEST_GENERATION: i64 = 2;
 
@@ -27,12 +28,13 @@ enum Commands {
     }
 }
 
-fn main() {
+fn main() -> Result<()> {
     let cli = PDex::parse();
     let db = rusqlite::Connection::open("pdex.db").unwrap();
     
     match cli.command {
-        Commands::Lookup { name, id , generation} => lookup::lookup(&db, name, id, generation),
+        Commands::Lookup { name, id , generation} => lookup::lookup(&db, name, id, generation).context("Error occurred in lookup command.")?,
     }
     
+    Ok(())
 }
