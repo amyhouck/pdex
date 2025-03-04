@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use indexmap::IndexMap;
 
 // Primary Pokemon Structure
 // Generation 1
@@ -20,7 +20,7 @@ pub struct Pokemon {
     pub base_special_defense: i64,
     pub base_speed: i64,
     
-    pub flavor_text: HashMap<String, String>,
+    pub flavor_text: IndexMap<String, String>,
 }
 
 // Pokemon Types

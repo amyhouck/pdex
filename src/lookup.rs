@@ -2,11 +2,11 @@ use colored::Colorize;
 use rusqlite::Row;
 use crate::data::{Pokemon, PokemonType};
 use crate::LATEST_GENERATION;
-use std::collections::HashMap;
+use indexmap::IndexMap;
 use anyhow::{anyhow, Result};
 
-fn retrieve_flavor_text(generation: i64, row: &Row<'_>) -> HashMap<String, String> {
-    let mut flavor_text: HashMap<String, String> = HashMap::new();
+fn retrieve_flavor_text(generation: i64, row: &Row<'_>) -> IndexMap<String, String> {
+    let mut flavor_text: IndexMap<String, String> = IndexMap::new();
         
     match generation {
         1 => {
