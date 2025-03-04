@@ -18,6 +18,13 @@ fn retrieve_flavor_text(generation: i64, row: &Row<'_>) -> HashMap<String, Strin
             flavor_text.insert("Silver".to_string(), row.get("text_silver").unwrap());
             flavor_text.insert("Crystal".cyan().to_string(), row.get("text_crystal").unwrap());
         },
+        3 => {
+            flavor_text.insert("Ruby".red().to_string(), row.get("text_ruby").unwrap());
+            flavor_text.insert("Sapphire".bright_blue().to_string(), row.get("text_sapphire").unwrap());
+            flavor_text.insert("Emerald".green().to_string(), row.get("text_emerald").unwrap());
+            flavor_text.insert("Firered".bright_red().to_string(), row.get("text_firered").unwrap());
+            flavor_text.insert("Leafgreen".bright_green().to_string(), row.get("text_leafgreen").unwrap());
+        }
         _ => {}
     }
     
@@ -26,6 +33,10 @@ fn retrieve_flavor_text(generation: i64, row: &Row<'_>) -> HashMap<String, Strin
 
 fn print_pokedex(data: Pokemon, generation: i64) {
     println!("{}: {} ({})", "Name".red(), data.name, data.id.to_string()); // NAME (ID)
+    
+    if data.form != String::new() {
+        println!("{}: {}", "Form".red(), data.form); // FORM (if the pokemon has one)
+    }
     
     if data.type2 == PokemonType::None { // TYPE or TYPES
         println!("{}: {}", "Type".red(), data.type1.to_string());
@@ -59,6 +70,7 @@ pub fn lookup(
     name: Option<String>,
     id: Option<i64>,
     generation: Option<i64>,
+    form: Option<String>
 ) -> Result<()> {
     // Build query
     let generation = generation.unwrap_or(LATEST_GENERATION);
@@ -68,13 +80,17 @@ pub fn lookup(
         return Err(anyhow!(err));
     }
     
-    let query = if let Some(id) = id {
+    let mut query = if let Some(id) = id {
         format!("SELECT * FROM generation_{generation} WHERE id = {id}")  
     } else if let Some(name) = name {
         format!("SELECT * FROM generation_{generation} WHERE name = \"{name}\"")
     } else {
         return Err(anyhow!("You must include either the pokemon's name or ID!"));
     };
+    
+    if let Some(form) = form {
+        query = format!("{query} AND form LIKE '%{form}%'");
+    }
     
     // Execute query
     let data = db.query_row(&query, (), |row| {
@@ -90,6 +106,7 @@ pub fn lookup(
         Ok(Pokemon {
             id: row.get("id").unwrap(),
             name: row.get("name").unwrap(),
+            form: row.get("form").unwrap(),
             type1: PokemonType::from(type1),
             type2: PokemonType::from(type2),
             height: row.get("height").unwrap(),

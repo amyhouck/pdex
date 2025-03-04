@@ -4,7 +4,7 @@ mod lookup;
 use clap::{Parser, Subcommand};
 use anyhow::{Context, Result};
 
-const LATEST_GENERATION: i64 = 2;
+const LATEST_GENERATION: i64 = 3;
 
 #[derive(Debug, Parser)]
 #[command(version, about, long_about = None)]
@@ -23,6 +23,9 @@ enum Commands {
         #[arg(short, long, value_name = "ID")]
         id: Option<i64>,
         
+        #[arg(short, long, value_name = "FORM")]
+        form: Option<String>,
+        
         #[arg(short, long, value_name = "GENERATION")]
         generation: Option<i64>,
     }
@@ -33,7 +36,7 @@ fn main() -> Result<()> {
     let db = rusqlite::Connection::open("pdex.db").unwrap();
     
     match cli.command {
-        Commands::Lookup { name, id , generation} => lookup::lookup(&db, name, id, generation).context("Error occurred in lookup command.")?,
+        Commands::Lookup { name, id , generation, form} => lookup::lookup(&db, name, id, generation, form).context("Error occurred in lookup command.")?,
     }
     
     Ok(())

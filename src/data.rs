@@ -6,6 +6,7 @@ use std::collections::HashMap;
 pub struct Pokemon {
     pub id: i64,
     pub name: String,
+    pub form: String,
     pub type1: PokemonType,
     pub type2: PokemonType,
     pub height: f64,
