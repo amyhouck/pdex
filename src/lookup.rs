@@ -106,7 +106,7 @@ pub fn lookup(
         Ok(Pokemon {
             id: row.get("id").unwrap(),
             name: row.get("name").unwrap(),
-            form: row.get("form").unwrap(),
+            form: row.get("form").unwrap_or(String::new()),
             type1: PokemonType::from(type1),
             type2: PokemonType::from(type2),
             height: row.get("height").unwrap(),
