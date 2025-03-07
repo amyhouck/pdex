@@ -24,7 +24,14 @@ fn retrieve_flavor_text(generation: i64, row: &Row<'_>) -> IndexMap<String, Stri
             flavor_text.insert("Emerald".green().to_string(), row.get("text_emerald").unwrap());
             flavor_text.insert("Firered".bright_red().to_string(), row.get("text_firered").unwrap());
             flavor_text.insert("Leafgreen".bright_green().to_string(), row.get("text_leafgreen").unwrap());
-        }
+        },
+        4 => {
+            flavor_text.insert("Diamond".blue().to_string(), row.get("text_diamond").unwrap());
+            flavor_text.insert("Pearl".bright_red().to_string(), row.get("text_pearl").unwrap());
+            flavor_text.insert("Platinum".white().to_string(), row.get("text_platinum").unwrap());
+            flavor_text.insert("HeartGold".yellow().to_string(), row.get("text_heartgold").unwrap());
+            flavor_text.insert("SoulSilver".cyan().to_string(), row.get("text_soulsilver").unwrap());
+        },
         _ => {}
     }
     
