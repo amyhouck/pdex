@@ -32,6 +32,12 @@ fn retrieve_flavor_text(generation: i64, row: &Row<'_>) -> IndexMap<String, Stri
             flavor_text.insert("HeartGold".yellow().to_string(), row.get("text_heartgold").unwrap());
             flavor_text.insert("SoulSilver".cyan().to_string(), row.get("text_soulsilver").unwrap());
         },
+        5 => {
+            flavor_text.insert("Black".to_string(), row.get("text_black").unwrap());
+            flavor_text.insert("White".to_string(), row.get("text_white").unwrap());
+            flavor_text.insert("Black 2".to_string(), row.get("text_black_2").unwrap());
+            flavor_text.insert("White 2".to_string(), row.get("text_white_2").unwrap());
+        },
         _ => {}
     }
     
