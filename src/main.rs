@@ -4,7 +4,7 @@ mod lookup;
 use clap::{Parser, Subcommand};
 use anyhow::{Context, Result};
 
-const LATEST_GENERATION: i64 = 5;
+const LATEST_GENERATION: i64 = 9;
 
 #[derive(Debug, Parser)]
 #[command(version, about, long_about = None)]

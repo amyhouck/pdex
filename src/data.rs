@@ -44,6 +44,7 @@ pub enum PokemonType {
     Ice,
     Dragon,
     Dark,
+    Fairy,
 }
 
 impl From<i64> for PokemonType {
@@ -66,6 +67,7 @@ impl From<i64> for PokemonType {
             14 => Self::Ice,
             15 => Self::Dragon,
             16 => Self::Dark,
+            17 => Self::Fairy,
             _ => Self::None
         }
     }
@@ -91,6 +93,7 @@ impl ToString for PokemonType {
             Self::Ice => String::from("Ice"),
             Self::Dragon => String::from("Dragon"),
             Self::Dark => String::from("Dark"),
+            Self::Fairy => String::from("Fairy"),
             _ => String::from("None")
         }
     }

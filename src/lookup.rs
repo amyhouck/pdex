@@ -38,6 +38,31 @@ fn retrieve_flavor_text(generation: i64, row: &Row<'_>) -> IndexMap<String, Stri
             flavor_text.insert("Black 2".to_string(), row.get("text_black_2").unwrap());
             flavor_text.insert("White 2".to_string(), row.get("text_white_2").unwrap());
         },
+        6 => {
+            flavor_text.insert("X".blue().to_string(), row.get("text_x").unwrap());
+            flavor_text.insert("Y".red().to_string(), row.get("text_y").unwrap());
+            flavor_text.insert("OmegaRuby".bright_red().to_string(), row.get("text_omega_ruby").unwrap());
+            flavor_text.insert("AlphaSapphire".cyan().to_string(), row.get("text_alpha_sapphire").unwrap());
+        },
+        7 => {
+            flavor_text.insert("Sun".bright_yellow().to_string(), row.get("text_sun").unwrap());
+            flavor_text.insert("Moon".cyan().to_string(), row.get("text_moon").unwrap());
+            flavor_text.insert("Ultra Sun".bright_red().to_string(), row.get("text_ultra_sun").unwrap());
+            flavor_text.insert("Ultra Moon".blue().to_string(), row.get("text_ultra_moon").unwrap());
+            flavor_text.insert("Let's Go Pikachu".yellow().to_string(), row.get("text_lets_go_pikachu").unwrap());
+            flavor_text.insert("Let's Go Eevee".white().to_string(), row.get("text_lets_go_eevee").unwrap());
+        },
+        8 => {
+            flavor_text.insert("Sword".red().to_string(), row.get("text_sword").unwrap());
+            flavor_text.insert("Shield".blue().to_string(), row.get("text_shield").unwrap());
+            flavor_text.insert("Brilliant Diamond".cyan().to_string(), row.get("text_brilliant_diamond").unwrap());
+            flavor_text.insert("Shining Pearl".magenta().to_string(), row.get("text_shining_pearl").unwrap());
+            flavor_text.insert("Legends Arceus".white().to_string(), row.get("text_legends_arceus").unwrap());
+        },
+        9 => {
+            flavor_text.insert("Scarlet".red().to_string(), row.get("text_scarlet").unwrap());
+            flavor_text.insert("Violet".purple().to_string(), row.get("text_violet").unwrap());
+        },
         _ => {}
     }
     
